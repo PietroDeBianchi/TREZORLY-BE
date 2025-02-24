@@ -1,0 +1,34 @@
+{
+  "name": "trezorly",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:PietroDeBianchi/Trezorl-BE.git",
+  "author": "PietroDeBianchi <pietro.debianchi@shadapps.it>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon src/app.js",
+    "start": "node src/app.js",
+    "api-list": "node src/utils/terminal/list-endpoints.js",
+    "scaffold": "node src/utils/terminal/scaffold-viewer.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "bcryptjs": "^3.0.2",
+    "body-parser": "^1.20.3",
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-list-endpoints": "^7.1.1",
+    "helmet": "^8.0.0",
+    "http-status": "^2.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.10.1",
+    "mongoose-autopopulate": "^1.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.21.0",
+    "nodemon": "^3.1.9",
+    "prettier": "^3.5.2"
+  }
+}
