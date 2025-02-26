@@ -1,4 +1,4 @@
-const { registerUser, loginUser, getUserById } = require("../helpers/auth.helper");
+const { registerUser, loginUser, getUserById } = require("../helpers/authHelper");
 
 /**
  * Controller for user registration.

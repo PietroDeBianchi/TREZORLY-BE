@@ -24,7 +24,8 @@
     "http-status": "^2.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.10.1",
-    "mongoose-autopopulate": "^1.1.0"
+    "mongoose-autopopulate": "^1.1.0",
+    "nanoid": "^5.1.2"
   },
   "devDependencies": {
     "eslint": "^9.21.0",
