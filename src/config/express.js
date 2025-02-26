@@ -26,7 +26,7 @@ app.use(helmet());
 // enable CORS - Cross Origin Resource Sharing
 app.use(cors({ credentials: true, origin: true }));
 
-// mount api v1 routes
+// mount api routes
 app.use('/api', routes);
 
 // Middleware to handle errors

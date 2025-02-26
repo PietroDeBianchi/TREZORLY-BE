@@ -12,7 +12,7 @@ const connectDB = async () => {
     // Access the current database instance
     const db = mongoose.connection.db;
   } catch (err) {
-    console.error("Moviebase connection error:", err);
+    console.error("DB connection error:", err);
     process.exit(1);
   }
 };
