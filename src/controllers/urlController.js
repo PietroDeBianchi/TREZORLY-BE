@@ -1,66 +1,54 @@
-const URL = require("../models/URL");
-const Analytics = require("../models/Analytics");
-const { nanoid } = require("nanoid"); // Per generare short URL
-const axios = require("axios");
+const {
+    shortenUrlService,
+    redirectUrlService,
+    getAnalyticsService,
+} = require("../helpers/urlHelper");
 
 const shortenUrl = async (req, res) => {
     try {
         const { originalUrl } = req.body;
-        const shortUrl = nanoid(8); // Genera un ID univoco di 8 caratteri
-
-        const newUrl = await URL.create({
-            originalUrl,
-            shortUrl,
-        });
-
-        res.json(newUrl);
+        if (!originalUrl) {
+            return res.status(400).json({ error: "Original URL is required" });
+        }
+        const newUrl = await shortenUrlService(originalUrl);
+        return res.status(201).json(newUrl);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error("Error in shortenUrl:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
     }
 };
 
 const redirectUrl = async (req, res) => {
     try {
         const { shortUrl } = req.params;
-        const urlEntry = await URL.findOne({ shortUrl });
-
-        if (!urlEntry) return res.status(404).json({ message: "URL not found" });
-
-        // Aggiorna il conteggio dei click
-        urlEntry.clicks += 1;
-        await urlEntry.save();
-
-        // Ottieni info dall'IP (facoltativo)
-        const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
-        const geoData = await axios.get(`https://ipinfo.io/${ip}/json?token=YOUR_IPINFO_TOKEN`);
-        const { city, country } = geoData.data;
-
-        // Registra l'evento in analytics
-        await Analytics.create({
-            url: urlEntry._id,
-            ip,
-            location: `${city}, ${country}`,
-            browser: req.headers["user-agent"],
-            referrer: req.headers.referer || "Direct",
-        });
-
-        // Reindirizza all'URL originale
-        res.redirect(urlEntry.originalUrl);
+        if (!shortUrl) {
+            return res.status(400).json({ error: "Short URL is required" });
+        }
+        const redirectUrl = await redirectUrlService(shortUrl);
+        if (!redirectUrl) {
+            return res.status(404).json({ error: "Short URL not found" });
+        }
+        return res.redirect(redirectUrl);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error("Error in redirectUrl:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
     }
 };
 
 const getAnalytics = async (req, res) => {
     try {
         const { shortUrl } = req.params;
-        const urlEntry = await URL.findOne({ shortUrl }).populate("analytics");
-
-        if (!urlEntry) return res.status(404).json({ message: "URL not found" });
-
-        res.json(urlEntry.analytics);
+        if (!shortUrl) {
+            return res.status(400).json({ error: "Short URL is required" });
+        }
+        const analyticsData = await getAnalyticsService(shortUrl);
+        if (!analyticsData) {
+            return res.status(404).json({ error: "No analytics found for this URL" });
+        }
+        return res.status(200).json(analyticsData);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error("Error in getAnalytics:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
     }
 };
 
