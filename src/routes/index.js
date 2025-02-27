@@ -10,6 +10,6 @@ const urlRoute = require('./urlRoute');
 router.use('/v1/auth', authRoutes);
 //========================================
 // URL ROUTES
-router.use('/v1/auth', urlRoute);
+router.use('/v1/url', urlRoute);
 
 module.exports = router;

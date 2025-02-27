@@ -7,10 +7,7 @@ const analyticsSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "URL",
             required: true,
-        },
-        clicks: {
-            type: Number,
-            default: 0,
+            index: true,
         },
         ip: {
             type: String,
@@ -25,11 +22,19 @@ const analyticsSchema = new Schema(
         os: {
             type: String,
         },
+        deviceType: {
+            type: String,
+        },
         referrer: {
             type: String,
+            default: "Direct",
         },
         userAgent: {
             type: String,
+        },
+        timestamp: {
+            type: Date,
+            default: Date.now,
         },
     },
     {
@@ -38,7 +43,4 @@ const analyticsSchema = new Schema(
     }
 );
 
-// Abilita l'autopopulate per il riferimento all'URL
-analyticsSchema.plugin(require("mongoose-autopopulate"));
-
-module.exports = mongoose.model("Analytics", analyticsSchema);
+module.exports = mongoose.model("analytics", analyticsSchema);

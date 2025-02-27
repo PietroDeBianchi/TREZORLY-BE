@@ -12,6 +12,10 @@ const urlSchema = new mongoose.Schema(
             required: true,
             unique: true,
         },
+        clicks: {
+            type: Number,
+            default: 0,
+        },
         analytics: {
             type: [Schema.Types.ObjectId],
             ref: "analytics",
@@ -33,4 +37,4 @@ const urlSchema = new mongoose.Schema(
 
 // Use to autopopulate reference with entity ID
 urlSchema.plugin(require("mongoose-autopopulate"));
-module.exports = mongoose.model("URL", urlSchema);
+module.exports = mongoose.model("urls", urlSchema);
